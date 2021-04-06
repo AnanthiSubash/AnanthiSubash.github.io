@@ -1,0 +1,21 @@
+{{define "deleteUserPage"}}
+<html>
+    <head>
+        <title>
+            DELETE USER PAGE
+        </title>
+    </head>
+            <h1 >DELETE USER</h1>
+        
+    <body>
+            <form method="POST" action="/deleteuser" > 
+                <label>User ID :</label>
+                <input type="text" name="id"/><br/><br/>
+                
+                <button type="submit" value="deleteUser" >Delete</button>
+            </form>
+            
+    
+        </body>
+</html>
+{{end}}

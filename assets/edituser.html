@@ -1,0 +1,26 @@
+{{define "editUserPage"}}
+<html>
+    <head>
+        <title>
+            EDIT USER PAGE
+        </title>
+    </head>
+            <h1 >EDIT USER DETAILS</h1>
+        
+    <body>
+            <form method="POST" action="/edituser" > 
+                <label>UserID :</label>
+                <input type="text" name="id"/><br/><br/>
+                <label>User Name:</label>
+                <input type="text" name="name"/><br/><br/>
+                <label>Password   :</label>
+                <input type="text" name="password"/><br/><br/>
+                <label>Role   :</label>
+                <input type="text" name="role"/><br/><br/>
+                <button type="submit" value="EditUser" >Edit</button>
+            </form>
+            
+    
+        </body>
+</html>
+{{end}}

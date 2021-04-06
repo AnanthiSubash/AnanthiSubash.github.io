@@ -1,0 +1,25 @@
+{{define "editQuestionPage"}}
+<html>
+    <head>
+        <title>
+            EDIT QUESTION PAGE
+        </title>
+    </head>
+            <h1 >EDIT QUESTIONS</h1>
+        
+    <body>
+            <form method="POST" action="/editquestion" > 
+                <label>Question ID :</label>
+                <input type="text" name="id"/><br/><br/>
+                <label>Question:</label>
+                <input type="text" name="question"/><br/><br/>
+                <label>Question Type   :</label>
+                <input type="text" name="qtype"/><br/><br/>
+                
+                <button type="submit" value="EditQuestion" >Edit</button>
+            </form>
+            
+    
+        </body>
+</html>
+{{end}}

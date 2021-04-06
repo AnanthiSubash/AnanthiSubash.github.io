@@ -1,0 +1,36 @@
+{{define "dashBoard"}}
+<html>
+    <head>
+        <title>
+            Dashboard
+        </title>
+    </head>
+            <h1 >Dashboard</h1>
+    <body>
+            <table >                    <!-- Table header --> 
+               <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th>Username</th>
+                        <th>Question Count</th>
+                        
+                        
+                    </tr>
+                </thead>                                                   <!-- Table body -->                    
+                <tbody>
+                    {{ range . }}
+                    <tr>
+                        <td>{{ .ID }}</td>
+                        <td>{{ .Username }}</td>
+                        <td>{{ .Count}}</td>
+                        
+                        
+                    </tr>
+                    {{end}}
+                    </tbody>                
+                </table>
+            
+    
+        </body>
+</html>
+{{end}}

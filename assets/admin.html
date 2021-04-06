@@ -1,0 +1,23 @@
+{{define "adminPage"}}
+<html>
+    <head>
+       <title>Dragon Exam Builder</title>
+    </head>
+    <body>
+        <h1>Dragon Exam Builder Admin Page</h1>
+        <div>
+                <form method="POST" action="/logout">
+                    <button type="submit">Log Out</button> 
+                </form>
+            </div>
+        <p><a href="/users" target="iframe_a">USERS MANAGEMENT</a>
+        <a href="/exams" target="iframe_a"> EXAMS MANAGEMENT</a>
+        <a href="/questions" target="iframe_a">QUESTIONS MANAGEMENT</a></p>
+        <a href="/dashboard" target="iframe_a">DASHBOARD</a>
+        <iframe src="" name="iframe_a" height="100%" width="100%" ></iframe>
+        
+
+
+    </body>
+</html>
+{{end}}

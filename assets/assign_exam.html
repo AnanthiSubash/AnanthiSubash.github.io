@@ -1,0 +1,47 @@
+{{define "assignExam"}}
+<html>
+    <head>
+        <title>
+            Associate Exam to Questions
+        </title>
+    </head>
+            <h1 >Associate Exam to Questions</h1>
+    <body>
+            <form method="POST" action="/assignexam" > 
+            <div>
+                    
+                    <label>Select Exam:</label>
+                    <select id="exam" name="exam">
+                            <option value=""></option>
+                            {{ range .}}
+                                {{if .Examname}}
+                                 <option value="{{ .Examname }}" id="{{ .ID }}">{{ .Examname }}</option> 
+                                {{end}}
+                            {{end}}
+                    </select>
+            </div>
+            <div>
+            <table>                    <!-- Table header --> 
+               <thead>
+                    <tr>
+                        <th>Associate Exam?</th>
+                        <th>Question</th>
+                    </tr>
+                </thead>                <!-- Table body -->                    
+                <tbody name="tbody">
+                    {{ range . }}
+                    {{if .Question}}
+                    <tr>
+                        <td><input type="checkbox" name="assignq"/></td>
+                        <td>{{ .Question }}</td>
+                    </tr>
+                    {{end}}
+                    {{end}}
+                    </tbody>                
+                </table>
+    </div>
+                <button type="submit" value="AssignExam" >Submit</button>
+                </form>
+        </body>
+</html>
+{{end}}

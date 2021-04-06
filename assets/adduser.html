@@ -1,0 +1,24 @@
+{{define "addUserPage"}}
+<html>
+    <head>
+        <title>
+            ADD USER PAGE
+        </title>
+    </head>
+            <h1 >ADD USER DETAILS</h1>
+        
+    <body>
+            <form method="POST" action="/adduser" > 
+                <label>Username :</label>
+                <input type="text" name="name"/><br/><br/>
+                <label>Password   :</label>
+                <input type="text" name="password"/><br/><br/>
+                <label>Role   :</label>
+                <input type="text" name="role"/><br/><br/>
+                <button type="submit" value="AddUser" >ADD</button>
+            </form>
+            
+    
+        </body>
+</html>
+{{end}}

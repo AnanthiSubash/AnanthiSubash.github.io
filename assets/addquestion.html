@@ -1,0 +1,23 @@
+{{define "addQuestionPage"}}
+<html>
+    <head>
+        <title>
+            ADD QUESTION PAGE
+        </title>
+    </head>
+            <h1 >ADD QUESTION</h1>
+        
+    <body>
+            <form method="POST" action="/addquestion" > 
+                <label>Question Type:</label>
+                <input type="text" name="qtype"/><br/><br/>
+                <label>Question   :</label>
+                <input type="text" name="question"/><br/><br/>
+                
+                <button type="submit" value="AddQuestion" >ADD</button>
+            </form>
+            
+    
+        </body>
+</html>
+{{end}}

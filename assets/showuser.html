@@ -1,0 +1,36 @@
+{{define "showUserPage"}}
+<html>
+    <head>
+        <title>
+            DISPLAY USER PAGE
+        </title>
+    </head>
+            <h1 >DISPLAY USER DETAILS</h1>
+    <body>
+            <table >                    <!-- Table header --> 
+               <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Password</th>
+                        <th>Role</th>
+                        
+                    </tr>
+                </thead>                                                   <!-- Table body -->                    
+                <tbody>
+                    {{ range . }}
+                    <tr>
+                        <td>{{ .ID }}</td>
+                        <td>{{ .Username }}</td>
+                        <td>{{ .Password }}</td>
+                        <td>{{ .Role }}</td>
+                        
+                    </tr>
+                    {{end}}
+                    </tbody>                
+                </table>
+            
+    
+        </body>
+</html>
+{{end}}

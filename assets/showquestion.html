@@ -1,0 +1,36 @@
+{{define "showQuestionPage"}}
+<html>
+    <head>
+        <title>
+            DISPLAY QUESTION PAGE
+        </title>
+    </head>
+            <h1 >DISPLAY QUESTION DETAILS</h1>
+    <body>
+            <table >                    <!-- Table header --> 
+               <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Q_Type</th>
+                        <th>Question</th>
+                        <th>User ID</th>
+                        
+                    </tr>
+                </thead>                                                   <!-- Table body -->                    
+                <tbody>
+                    {{ range . }}
+                    <tr>
+                        <td>{{ .ID }}</td>
+                        <td>{{ .Qtype }}</td>
+                        <td>{{ .Question }}</td>
+                        <td>{{ .UserID }}</td>
+                        
+                    </tr>
+                    {{end}}
+                    </tbody>                
+                </table>
+            
+    
+        </body>
+</html>
+{{end}}

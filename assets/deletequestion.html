@@ -1,0 +1,21 @@
+{{define "deleteQuestionPage"}}
+<html>
+    <head>
+        <title>
+            DELETE Question PAGE
+        </title>
+    </head>
+            <h1 >DELETE QUESTION</h1>
+        
+    <body>
+            <form method="POST" action="/deletequestion" > 
+                <label>Question ID :</label>
+                <input type="text" name="id"/><br/><br/>
+                
+                <button type="submit" value="DeleteQuestion" >Delete</button>
+            </form>
+            
+    
+        </body>
+</html>
+{{end}}

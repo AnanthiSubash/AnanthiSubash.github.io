@@ -27,26 +27,12 @@ type Questions struct {
 
 func QuestionsPage(w http.ResponseWriter, r *http.Request) {
 	if getUserId(r) == "" {
-		log.Printf("Not Logged In..")
 		http.Redirect(w, r, "/", 302)
 	}
-	var templates *template.Template
-	templates = template.Must(templates.ParseGlob("assets/*"))
-	err := templates.ExecuteTemplate(w, "questionsPage", nil)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
+	TemplateHandler(w, "questionsPage")
 }
 func AddQuestion(w http.ResponseWriter, r *http.Request) {
-	// create the postgres db connection
-	var templates *template.Template
-	templates = template.Must(templates.ParseGlob("assets/*"))
-	err := templates.ExecuteTemplate(w, "addQuestionPage", nil)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
+	TemplateHandler(w, "addQuestionPage")
 	if r.Method == "POST" {
 		db := createConnection()
 		// close the db connection
@@ -54,7 +40,7 @@ func AddQuestion(w http.ResponseWriter, r *http.Request) {
 		r.ParseForm()
 		insertStmt := `insert into "questions"("question", "q_type","user_id") values($1, $2,$3)`
 
-		_, err = db.Exec(insertStmt, r.FormValue("question"), r.FormValue("qtype"), getUserId(r))
+		_, err := db.Exec(insertStmt, r.FormValue("question"), r.FormValue("qtype"), getUserId(r))
 		if err != nil {
 			log.Fatalf("Unable to execute the query. %v", err)
 		}
@@ -62,14 +48,8 @@ func AddQuestion(w http.ResponseWriter, r *http.Request) {
 }
 
 func EditQuestion(w http.ResponseWriter, r *http.Request) {
-	// create the postgres db connection
-	var templates *template.Template
-	templates = template.Must(templates.ParseGlob("assets/*"))
-	err := templates.ExecuteTemplate(w, "editQuestionPage", nil)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
+	TemplateHandler(w, "editQuestionPage")
+
 	if r.Method == "POST" {
 		db := createConnection()
 
@@ -77,7 +57,7 @@ func EditQuestion(w http.ResponseWriter, r *http.Request) {
 		defer db.Close()
 		r.ParseForm()
 		updateStmt := `update "questions" set "question"=$1, "q_type"=$2,"user_id"=$3 where "questions_id"=$4`
-		_, err = db.Exec(updateStmt, r.FormValue("question"), r.FormValue("qtype"), getUserId(r), r.FormValue("id"))
+		_, err := db.Exec(updateStmt, r.FormValue("question"), r.FormValue("qtype"), getUserId(r), r.FormValue("id"))
 		if err != nil {
 			log.Fatalf("Unable to execute the query. %v", err)
 		}
@@ -85,16 +65,7 @@ func EditQuestion(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteQuestion(w http.ResponseWriter, r *http.Request) {
-
-	// create the postgres db connection
-
-	var templates *template.Template
-	templates = template.Must(templates.ParseGlob("assets/*"))
-	err := templates.ExecuteTemplate(w, "deleteQuestionPage", nil)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
+	TemplateHandler(w, "deleteQuestionPage")
 	db := createConnection()
 
 	// close the db connection
@@ -103,7 +74,7 @@ func DeleteQuestion(w http.ResponseWriter, r *http.Request) {
 	deleteStmt := `delete from "questions" where questions_id=$1`
 	qid, _ := strconv.Atoi(r.FormValue("id"))
 	log.Printf("%v,%T", qid, qid)
-	db.Exec(deleteStmt, qid)
+	_, err := db.Exec(deleteStmt, qid)
 	if err != nil {
 		log.Fatalf("Unable to execute the query. %v", err)
 	}

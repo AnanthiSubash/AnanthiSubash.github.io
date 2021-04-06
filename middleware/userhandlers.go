@@ -1,20 +1,10 @@
 package middleware
 
 import (
-	//"database/sql"
-	// package to encode and decode the json into struct and vice versa
-	//	"fmt"
-	//	"go-postgres/models" // models package where User schema is defined
 	"html/template"
 	"log"
-	"net/http" // used to access the request and response object of the api
+	"net/http"
 	"strconv"
-	//	"os"       // used to read the environment variable
-	//	"strconv"  // package used to covert string into int type
-	//	"github.com/gorilla/mux" // used to get the params from the route
-	//	"html/template"
-	//	"github.com/joho/godotenv" // package used to read the .env file
-	//	_ "github.com/lib/pq"      // postgres golang driver
 )
 
 // response format
@@ -31,30 +21,18 @@ type Dashboard struct {
 }
 
 func IndexPage(w http.ResponseWriter, r *http.Request) {
-	log.Print("IndexPage Inside")
-	var templates *template.Template
-	templates = template.Must(templates.ParseGlob("assets/*"))
-	err := templates.ExecuteTemplate(w, "indexPage", nil)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
+	TemplateHandler(w, "indexPage")
 }
 
 func LogoutPage(w http.ResponseWriter, r *http.Request) {
-
 	if r.Method == "POST" {
 		clearSession(w)
 		http.Redirect(w, r, "/", 302)
 	}
-
 }
 
 func LoginPage(w http.ResponseWriter, r *http.Request) {
-	log.Printf("Inside Login Handler")
 	if r.Method == "POST" {
-		log.Println("Inside POST")
 		r.ParseForm()
 		db := createConnection()
 		var formName string
@@ -82,69 +60,32 @@ func LoginPage(w http.ResponseWriter, r *http.Request) {
 	}
 }
 func AdminPage(w http.ResponseWriter, r *http.Request) {
-
 	if getUserId(r) == "" {
-		log.Printf("Not Logged In..")
 		http.Redirect(w, r, "/", 302)
 	}
-
-	log.Print("AdminPage Inside")
-	var templates *template.Template
-	templates = template.Must(templates.ParseGlob("assets/*"))
-	err := templates.ExecuteTemplate(w, "adminPage", nil)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
+	TemplateHandler(w, "adminPage")
 }
-func ReviewerPage(w http.ResponseWriter, r *http.Request) {
 
+func ReviewerPage(w http.ResponseWriter, r *http.Request) {
 	if getUserId(r) == "" {
-		log.Printf("Not Logged In..")
 		http.Redirect(w, r, "/", 302)
 	}
-	log.Print("AdminPage Inside")
-	var templates *template.Template
-	templates = template.Must(templates.ParseGlob("assets/*"))
-	err := templates.ExecuteTemplate(w, "reviewerPage", nil)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
+	TemplateHandler(w, "reviewerPage")
 }
 func DataEntryPage(w http.ResponseWriter, r *http.Request) {
-
 	if getUserId(r) == "" {
-		log.Printf("Not Logged In..")
 		http.Redirect(w, r, "/", 302)
 	}
-	log.Print("AdminPage Inside")
-	var templates *template.Template
-	templates = template.Must(templates.ParseGlob("assets/*"))
-	err := templates.ExecuteTemplate(w, "dataentryPage", nil)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
+	TemplateHandler(w, "dataentryPage")
 }
 
 func UsersPage(w http.ResponseWriter, r *http.Request) {
 	if getUserId(r) == "" {
-		log.Printf("Not Logged In..")
 		http.Redirect(w, r, "/", 302)
 	}
-	var templates *template.Template
-	templates = template.Must(templates.ParseGlob("assets/*"))
-	err := templates.ExecuteTemplate(w, "usersPage", nil)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
+	TemplateHandler(w, "usersPage")
+
 	if r.Method == "POST" {
-		log.Println("here")
 		r.ParseForm()
 		db := createConnection()
 		var password string
@@ -153,8 +94,7 @@ func UsersPage(w http.ResponseWriter, r *http.Request) {
 		// close the db connection
 		defer db.Close()
 		stmt := `SELECT "password","role_id" FROM "users" where "user_name"=$1`
-		log.Print(r.FormValue("name"))
-		db.QueryRow(stmt, r.FormValue("name")).Scan(&password, &role)
+		err := db.QueryRow(stmt, r.FormValue("name")).Scan(&password, &role)
 		if err != nil {
 			log.Println(err)
 			http.Error(w, "there was an error", http.StatusInternalServerError)
@@ -162,20 +102,13 @@ func UsersPage(w http.ResponseWriter, r *http.Request) {
 		}
 		userstmt := `SELECT "page" FROM "user_role" where "role_id"=$1`
 		db.QueryRow(userstmt, role).Scan(&page)
-		log.Printf("Redirecting to %v", page)
 		http.Redirect(w, r, page, 302)
 	}
 }
 
 func AddUser(w http.ResponseWriter, r *http.Request) {
 	// create the postgres db connection
-	var templates *template.Template
-	templates = template.Must(templates.ParseGlob("assets/*"))
-	err := templates.ExecuteTemplate(w, "addUserPage", nil)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
+	TemplateHandler(w, "addUserPage")
 
 	if r.Method == "POST" {
 		db := createConnection()
@@ -194,14 +127,8 @@ func AddUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func EditUser(w http.ResponseWriter, r *http.Request) {
-	// create the postgres db connection
-	var templates *template.Template
-	templates = template.Must(templates.ParseGlob("assets/*"))
-	err := templates.ExecuteTemplate(w, "editUserPage", nil)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
+	TemplateHandler(w, "editUserPage")
+
 	if r.Method == "POST" {
 		db := createConnection()
 
@@ -221,27 +148,10 @@ func EditUser(w http.ResponseWriter, r *http.Request) {
 
 func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	// create the postgres db connection
-
-	var templates *template.Template
-	templates = template.Must(templates.ParseGlob("assets/*"))
-	err := templates.ExecuteTemplate(w, "deleteUserPage", nil)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	db := createConnection()
-
-	// close the db connection
-	defer db.Close()
+	TemplateHandler(w, "deleteUserPage")
 	r.ParseForm()
-	deleteStmt := `delete from "users" where user_id=$1`
 	uid, _ := strconv.Atoi(r.FormValue("id"))
-	log.Printf("%v,%T", uid, uid)
-	db.Exec(deleteStmt, uid)
-	if err != nil {
-		log.Fatalf("Unable to execute the query. %v", err)
-	}
-
+	DbDeleteHandler(r, `delete from "users" where user_id=$1`, uid)
 }
 func ShowUser(w http.ResponseWriter, r *http.Request) {
 	var u []Users

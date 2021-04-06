@@ -14,54 +14,21 @@ type QExam struct {
 }
 
 func AddExam(w http.ResponseWriter, r *http.Request) {
-
-	// create the postgres db connection
-	var templates *template.Template
-	templates = template.Must(templates.ParseGlob("assets/*"))
-	err := templates.ExecuteTemplate(w, "addExamPage", nil)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
+	TemplateHandler(w, "addExamPage")
 	if r.Method == "POST" {
-		db := createConnection()
-		// close the db connection
-		defer db.Close()
-		r.ParseForm()
-		insertStmt := `insert into "exams"("exam_name") values($1)`
-
-		_, err := db.Exec(insertStmt, r.FormValue("exam"))
-		if err != nil {
-			log.Fatalf("Unable to execute the query. %v", err)
-		}
+		DbInsertHandler(r, `insert into "exams"("exam_name") values($1)`, "exam")
 	}
 }
 
 func ExamPage(w http.ResponseWriter, r *http.Request) {
 	if getUserId(r) == "" {
-		log.Printf("Not Logged In..")
 		http.Redirect(w, r, "/", 302)
 	}
-	var templates *template.Template
-	templates = template.Must(templates.ParseGlob("assets/*"))
-	err := templates.ExecuteTemplate(w, "examPage", nil)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
+	TemplateHandler(w, "examPage")
 }
 
 func ShowAssignExam(w http.ResponseWriter, r *http.Request) {
-	var templates *template.Template
-	templates = template.Must(templates.ParseGlob("assets/*"))
-	err := templates.ExecuteTemplate(w, "assignPage", nil)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
+	TemplateHandler(w, "assignPage")
 }
 
 func AssignExam(w http.ResponseWriter, r *http.Request) {

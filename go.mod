@@ -1,4 +1,4 @@
-module go-postgres
+module exambuilder
 
 go 1.16
 
